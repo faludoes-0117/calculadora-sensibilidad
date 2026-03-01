@@ -26,6 +26,7 @@ const { sourceId, targetId, sourceName, targetName } = Astro.props;
     <title>Convertir Sensibilidad: {sourceName} a {targetName}</title>
   </head>
   <body style="font-family: system-ui, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <a href="/calculadora-sensibilidad/" style="text-decoration: none; color: #0070f3; font-weight: bold; display: inline-block; margin-bottom: 20px;">&larr; Volver al inicio</a>
     <h1>Convertidor: {sourceName} a {targetName}</h1>
     <Calculator client:load sourceId={sourceId} targetId={targetId} />
   </body>
