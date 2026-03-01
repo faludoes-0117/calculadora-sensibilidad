@@ -1,0 +1,32 @@
+---
+import { games } from '../data/games';
+import Calculator from '../components/Calculator.tsx';
+
+export function getStaticPaths() {
+  const paths = [];
+  for (const origen of games) {
+    for (const destino of games) {
+      if (origen.id !== destino.id) {
+        paths.push({
+          params: { origen: origen.id, destino: destino.id },
+          props: { sourceId: origen.id, targetId: destino.id, sourceName: origen.name, targetName: destino.name },
+        });
+      }
+    }
+  }
+  return paths;
+}
+
+const { sourceId, targetId, sourceName, targetName } = Astro.props;
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Convertir Sensibilidad: {sourceName} a {targetName}</title>
+  </head>
+  <body style="font-family: system-ui, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <h1>Convertidor: {sourceName} a {targetName}</h1>
+    <Calculator client:load sourceId={sourceId} targetId={targetId} />
+  </body>
+</html>
