@@ -20,31 +20,111 @@ export function getStaticPaths() {
 const { sourceId, targetId, sourceName, targetName } = Astro.props;
 ---
 
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Convertir Sensibilidad de {sourceName} a {targetName} | Calculadora Exacta</title>
-    <meta name="description" content={`Usa nuestra calculadora gratuita para convertir tu sensibilidad de ${sourceName} a ${targetName}. Evita perder tu memoria muscular al cambiar de juego.`} />
+    <title>Convert {sourceName} to {targetName} Sensitivity | Exact Calculator</title>
   </head>
   <body>
+    <div class="lang-switcher">
+      <select id="languageSelect">
+        <option value="en">English</option>
+        <option value="es">Español (ES)</option>
+        <option value="es-la">Español (LA)</option>
+        <option value="de">Deutsch</option>
+        <option value="fr">Français</option>
+        <option value="it">Italiano</option>
+        <option value="zh">中文</option>
+        <option value="ja">日本語</option>
+        <option value="ru">Русский</option>
+      </select>
+    </div>
+
     <main class="container dynamic-page">
-      <a href="/calculadora-sensibilidad/" class="back-link">⟵ Volver al directorio</a>
+      <a href="/calculadora-sensibilidad/" class="back-link" id="t-back">⟵ Back to directory</a>
       
       <header class="dynamic-hero">
-        <h1>Convertidor de {sourceName} a {targetName}</h1>
-        <p>Ingresa tu sensibilidad actual para obtener el valor matemático exacto equivalente.</p>
+        <h1><span id="t-title">Converter:</span> {sourceName} ➔ {targetName}</h1>
+        <p id="t-sub">Enter your current sensitivity to get the exact mathematical equivalent.</p>
       </header>
 
       <Calculator client:load sourceId={sourceId} targetId={targetId} />
 
       <section class="seo-content">
-        <h2>¿Por qué convertir la sensibilidad de {sourceName} a {targetName}?</h2>
-        <p>Los motores gráficos de <strong>{sourceName}</strong> y <strong>{targetName}</strong> procesan el movimiento del ratón de manera diferente debido a sus valores predeterminados de <em>Yaw</em> (grados de rotación por punto). Utilizar esta calculadora asegura que la distancia física que recorre tu ratón en la alfombrilla (cm/360) sea idéntica en ambos juegos.</p>
+        <h2><span id="t-h2-1">Why convert sensitivity from</span> {sourceName} <span id="t-to">to</span> {targetName}?</h2>
+        <p id="t-p1">Graphics engines process mouse movement differently based on their default <em>Yaw</em> values. This calculator ensures the physical distance your mouse travels (cm/360) remains identical.</p>
         
-        <h2>¿Cómo mantener tu Aim intacto?</h2>
-        <p>Para garantizar una transición perfecta, asegúrate de que el DPI de tu ratón se mantenga constante en tu software de periféricos (Logitech, Razer, etc.). Modifica únicamente el valor de la sensibilidad dentro del menú de configuración de {targetName} utilizando el resultado proporcionado arriba.</p>
+        <h2 id="t-h2-2">How to keep your Aim intact?</h2>
+        <p id="t-p2">Ensure your mouse DPI remains constant in your peripheral software. Only modify the in-game sensitivity using the value provided above.</p>
       </section>
     </main>
+
+    <style is:global>
+      :root {
+        --bg-color: #0b0e14; --card-bg: #151a23; --border-color: #1f2937;
+        --accent: #00e5ff; --accent-hover: #00b8cc; --text-main: #f8fafc; --text-muted: #94a3b8;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: system-ui, -apple-system, sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; }
+      
+      .lang-switcher { position: absolute; top: 1rem; right: 1rem; }
+      .lang-switcher select { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.5rem; border-radius: 4px; outline: none; cursor: pointer; }
+      
+      .container { max-width: 800px; margin: 0 auto; padding: 4rem 1rem 2rem 1rem; }
+      .back-link { display: inline-block; color: var(--accent); text-decoration: none; margin-bottom: 2rem; font-weight: bold; }
+      
+      .dynamic-hero h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: 0.5rem; }
+      .dynamic-hero p { color: var(--text-muted); font-size: 1.1rem; }
+      
+      .seo-content { margin-top: 3rem; background: var(--card-bg); padding: 2rem; border-radius: 12px; border: 1px solid var(--border-color); }
+      .seo-content h2 { color: var(--accent); margin-bottom: 1rem; font-size: 1.4rem; }
+      .seo-content p { color: var(--text-muted); margin-bottom: 1.5rem; }
+      .seo-content p:last-child { margin-bottom: 0; }
+
+      /* Component CSS */
+      .calculator-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem; margin-top: 2rem; }
+      .input-group label { display: block; color: var(--text-muted); margin-bottom: 0.5rem; }
+      .input-group input { width: 100%; padding: 1rem; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 6px; font-size: 1.2rem; outline: none; transition: border 0.2s; }
+      .input-group input:focus { border-color: var(--accent); }
+      .result-group { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); }
+      @media (min-width: 480px) { .result-group { flex-direction: row; justify-content: space-between; align-items: center; } }
+      .result-text span { display: block; color: var(--text-muted); }
+      .result-text h3 { color: var(--accent); font-size: 2rem; margin: 0; line-height: 1; }
+      .btn-copy { background: var(--accent); color: #000; border: none; padding: 1rem 1.5rem; font-weight: bold; border-radius: 6px; cursor: pointer; transition: background 0.2s; width: 100%; }
+      @media (min-width: 480px) { .btn-copy { width: auto; } }
+      .btn-copy.copied { background: #10b981; color: white; }
+    </style>
+
+    <script>
+      const dict = {
+        en: { back: "⟵ Back to directory", title: "Converter:", sub: "Enter your current sensitivity to get the exact mathematical equivalent.", h2_1: "Why convert sensitivity from", to: "to", p1: "Graphics engines process mouse movement differently based on their default Yaw values. This calculator ensures the physical distance your mouse travels (cm/360) remains identical.", h2_2: "How to keep your Aim intact?", p2: "Ensure your mouse DPI remains constant in your peripheral software. Only modify the in-game sensitivity using the value provided above.", uiSens: "Sensitivity in", uiEquiv: "Equivalent in", uiBtn: "Copy Value" },
+        es: { back: "⟵ Volver al directorio", title: "Convertidor:", sub: "Ingresa tu sensibilidad actual para obtener el equivalente matemático exacto.", h2_1: "¿Por qué convertir la sensibilidad de", to: "a", p1: "Los motores gráficos procesan el movimiento de forma diferente. Esta calculadora asegura que la distancia física (cm/360) sea idéntica.", h2_2: "¿Cómo mantener tu Aim intacto?", p2: "Mantén tu DPI constante en el software de tu ratón. Modifica solo la sensibilidad dentro del juego.", uiSens: "Sensibilidad en", uiEquiv: "Equivalente en", uiBtn: "Copiar Valor" },
+        'es-la': { back: "⟵ Volver al inicio", title: "Convertidor:", sub: "Ingresa tu sensibilidad actual para sacar el equivalente matemático exacto.", h2_1: "¿Por qué convertir la sensibilidad de", to: "a", p1: "Los motores gráficos procesan el movimiento distinto. Esta calculadora te asegura que la distancia física (cm/360) quede igual.", h2_2: "¿Cómo no perder tu Aim?", p2: "Dejá tu DPI fijo en el programa de tu mouse. Cambiá nomás la sensibilidad adentro del juego.", uiSens: "Sensibilidad en", uiEquiv: "Equivalente en", uiBtn: "Copiar Valor" },
+        de: { back: "⟵ Zurück", title: "Konverter:", sub: "Geben Sie Ihre aktuelle Empfindlichkeit ein.", h2_1: "Warum Empfindlichkeit von", to: "nach", p1: "Grafik-Engines verarbeiten Mausbewegungen unterschiedlich. Dieser Rechner stellt sicher, dass die physische Distanz identisch bleibt.", h2_2: "Wie behältst du dein Aim?", p2: "Stellen Sie sicher, dass Ihre Maus-DPI konstant bleibt. Ändern Sie nur die In-Game-Sensibilität.", uiSens: "Empfindlichkeit in", uiEquiv: "Äquivalent in", uiBtn: "Kopieren" },
+        fr: { back: "⟵ Retour", title: "Convertisseur :", sub: "Entrez votre sensibilité actuelle.", h2_1: "Pourquoi convertir la sensibilité de", to: "à", p1: "Les moteurs graphiques traitent le mouvement différemment. Ce calculateur garantit que la distance physique reste identique.", h2_2: "Comment garder votre Aim intact ?", p2: "Assurez-vous que le DPI de votre souris reste constant. Ne modifiez que la sensibilité en jeu.", uiSens: "Sensibilité sur", uiEquiv: "Équivalent sur", uiBtn: "Copier" },
+        it: { back: "⟵ Indietro", title: "Convertitore:", sub: "Inserisci la tua sensibilità attuale.", h2_1: "Perché convertire la sensibilità da", to: "a", p1: "I motori grafici elaborano il movimento in modo diverso. Questo calcolatore assicura che la distanza fisica rimanga identica.", h2_2: "Come mantenere intatto il tuo Aim?", p2: "Assicurati che il DPI del mouse rimanga costante. Modifica solo la sensibilità nel gioco.", uiSens: "Sensibilità su", uiEquiv: "Equivalente su", uiBtn: "Copia" },
+        zh: { back: "⟵ 返回", title: "转换器：", sub: "输入您当前的灵敏度以获取精确的数学等价值。", h2_1: "为什么要转换灵敏度从", to: "到", p1: "图形引擎处理鼠标移动的方式不同。此计算器可确保您的鼠标移动的物理距离保持一致。", h2_2: "如何保持您的瞄准？", p2: "确保您的鼠标DPI保持不变。仅修改游戏内灵敏度。", uiSens: "灵敏度", uiEquiv: "等效于", uiBtn: "复制" },
+        ja: { back: "⟵ 戻る", title: "コンバーター:", sub: "現在の感度を入力して正確な数値を計算します。", h2_1: "なぜ感度を変換するのか", to: "から", p1: "グラフィックエンジンはマウスの動きの処理が異なります。この計算機は物理的な距離を一定に保ちます。", h2_2: "Aimを維持するには？", p2: "マウスのDPIを一定に保ち、ゲーム内の感度のみを変更してください。", uiSens: "感度", uiEquiv: "相当", uiBtn: "コピー" },
+        ru: { back: "⟵ Назад", title: "Конвертер:", sub: "Введите текущую чувствительность для получения точного эквивалента.", h2_1: "Зачем конвертировать чувствительность из", to: "в", p1: "Графические движки обрабатывают движения мыши по-разному. Этот калькулятор гарантирует идентичность физического расстояния.", h2_2: "Как сохранить аим?", p2: "Убедитесь, что DPI вашей мыши остается неизменным. Изменяйте только внутриигровую чувствительность.", uiSens: "Чувствительность в", uiEquiv: "Эквивалент в", uiBtn: "Копировать" }
+      };
+
+      document.getElementById('languageSelect').addEventListener('change', (e) => {
+        const lang = e.target.value;
+        const d = dict[lang];
+        
+        document.getElementById('t-back').innerText = d.back;
+        document.getElementById('t-title').innerText = d.title;
+        document.getElementById('t-sub').innerText = d.sub;
+        document.getElementById('t-h2-1').innerText = d.h2_1;
+        document.getElementById('t-to').innerText = d.to;
+        document.getElementById('t-p1').innerText = d.p1;
+        document.getElementById('t-h2-2').innerText = d.h2_2;
+        document.getElementById('t-p2').innerText = d.p2;
+        document.getElementById('ui-sens').innerText = d.uiSens;
+        document.getElementById('ui-equiv').innerText = d.uiEquiv;
+        document.getElementById('ui-btn').innerText = d.uiBtn;
+      });
+    </script>
   </body>
 </html>

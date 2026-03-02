@@ -24,7 +24,7 @@ export default function Calculator({ sourceId, targetId }: { sourceId: string, t
   return (
     <div className="calculator-card">
       <div className="input-group">
-        <label>Sensibilidad en {sourceGame.name}</label>
+        <label><span id="ui-sens">Sensitivity in</span> {sourceGame.name}</label>
         <input 
           type="number" 
           value={sens} 
@@ -36,11 +36,11 @@ export default function Calculator({ sourceId, targetId }: { sourceId: string, t
       
       <div className="result-group">
         <div className="result-text">
-          <span>Equivalente en {targetGame.name}</span>
+          <span><span id="ui-equiv">Equivalent in</span> {targetGame.name}</span>
           <h3>{result}</h3>
         </div>
-        <button className={copied ? 'btn-copy copied' : 'btn-copy'} onClick={handleCopy}>
-          {copied ? '✓ Copiado' : 'Copiar Valor'}
+        <button className={copied ? 'btn-copy copied' : 'btn-copy'} onClick={handleCopy} id="ui-btn">
+          {copied ? '✓ Copied' : 'Copy Value'}
         </button>
       </div>
     </div>
