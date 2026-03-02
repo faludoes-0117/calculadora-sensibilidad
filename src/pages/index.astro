@@ -10,10 +10,24 @@ import { games } from '../data/games';
     <meta name="description" content="Free tool to convert your mouse sensitivity (eDPI) between Valorant, CS2, Overwatch, and more. Keep your muscle memory intact." />
   </head>
   <body>
+    <div class="lang-switcher">
+      <select id="languageSelect">
+        <option value="en">English</option>
+        <option value="es">Español (ES)</option>
+        <option value="es-la">Español (LA)</option>
+        <option value="de">Deutsch</option>
+        <option value="fr">Français</option>
+        <option value="it">Italiano</option>
+        <option value="zh">中文</option>
+        <option value="ja">日本語</option>
+        <option value="ru">Русский</option>
+      </select>
+    </div>
+
     <main class="container">
       <header class="hero">
-        <h1>FPS Sensitivity Converter</h1>
-        <p>Transfer your exact settings between competitive games. Preserve your muscle memory, optimize your <strong>eDPI</strong>, and never lose precision when switching shooters.</p>
+        <h1 id="t-h1">FPS Sensitivity Converter</h1>
+        <p id="t-desc">Transfer your exact settings between competitive games. Preserve your muscle memory, optimize your <strong>eDPI</strong>, and never lose precision when switching shooters.</p>
       </header>
 
       <section class="grid-container">
@@ -51,12 +65,16 @@ import { games } from '../data/games';
         background-color: var(--bg-color);
         color: var(--text-main);
         line-height: 1.5;
+        position: relative;
       }
+
+      .lang-switcher { position: absolute; top: 1rem; right: 1rem; }
+      .lang-switcher select { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.5rem; border-radius: 4px; outline: none; cursor: pointer; }
 
       .container {
         max-width: 1000px;
         margin: 0 auto;
-        padding: 2rem 1rem;
+        padding: 4rem 1rem 2rem 1rem;
       }
 
       .hero { text-align: center; margin-bottom: 3rem; }
@@ -91,5 +109,54 @@ import { games } from '../data/games';
       .game-name { font-weight: 600; color: var(--text-main); }
       .arrow { color: var(--accent); font-weight: bold; }
     </style>
+
+    <script>
+      const dictIndex = {
+        en: { 
+          h1: "FPS Sensitivity Converter", 
+          desc: "Transfer your exact settings between competitive games. Preserve your muscle memory, optimize your <strong>eDPI</strong>, and never lose precision when switching shooters." 
+        },
+        es: { 
+          h1: "Convertidor de Sensibilidad FPS", 
+          desc: "Transfiere tu configuración exacta entre juegos competitivos. Conserva tu memoria muscular, optimiza tu <strong>eDPI</strong> y no pierdas precisión al cambiar de shooter." 
+        },
+        'es-la': { 
+          h1: "Convertidor de Sensibilidad FPS", 
+          desc: "Pasá tu configuración exacta entre juegos competitivos. Mantené tu memoria muscular, optimizá tu <strong>eDPI</strong> y no pierdas precisión al cambiar de shooter." 
+        },
+        de: { 
+          h1: "FPS Empfindlichkeits-Konverter", 
+          desc: "Übertragen Sie Ihre genauen Einstellungen zwischen kompetitiven Spielen. Bewahren Sie Ihr Muskelgedächtnis, optimieren Sie Ihre <strong>eDPI</strong> und verlieren Sie beim Wechseln von Shootern nie an Präzision." 
+        },
+        fr: { 
+          h1: "Convertisseur de Sensibilité FPS", 
+          desc: "Transférez vos paramètres exacts entre les jeux compétitifs. Préservez votre mémoire musculaire, optimisez votre <strong>eDPI</strong> et ne perdez jamais en précision en changeant de jeu de tir." 
+        },
+        it: { 
+          h1: "Convertitore di Sensibilità FPS", 
+          desc: "Trasferisci le tue impostazioni esatte tra i giochi competitivi. Preserva la tua memoria muscolare, ottimizza il tuo <strong>eDPI</strong> e non perdere mai precisione quando cambi sparatutto." 
+        },
+        zh: { 
+          h1: "FPS 灵敏度转换器", 
+          desc: "在竞技游戏之间转移您的精确设置。保留您的肌肉记忆，优化您的 <strong>eDPI</strong>，并在切换射击游戏时永不失去精度。" 
+        },
+        ja: { 
+          h1: "FPS 感度コンバーター", 
+          desc: "対戦ゲーム間で正確な設定を転送します。マッスルメモリを維持し、<strong>eDPI</strong>を最適化し、シューターを切り替える際に精度を失うことはありません。" 
+        },
+        ru: { 
+          h1: "Конвертер Чувствительности FPS", 
+          desc: "Переносите свои точные настройки между соревновательными играми. Сохраняйте мышечную память, оптимизируйте <strong>eDPI</strong> и никогда не теряйте точность при смене шутеров." 
+        }
+      };
+
+      document.getElementById('languageSelect').addEventListener('change', (e) => {
+        const lang = (e.target as HTMLSelectElement).value;
+        const d = dictIndex[lang];
+        
+        document.getElementById('t-h1').innerText = d.h1;
+        document.getElementById('t-desc').innerHTML = d.desc;
+      });
+    </script>
   </body>
 </html>
