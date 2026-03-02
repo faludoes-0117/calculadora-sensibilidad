@@ -2,18 +2,18 @@
 import { games } from '../data/games';
 ---
 
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Calculadora de Sensibilidad Gaming | Convierte tu Aim entre FPS</title>
-    <meta name="description" content="Herramienta gratuita para convertir tu sensibilidad (eDPI) entre Valorant, CS2, Overwatch y más. Mantén tu memoria muscular intacta." />
+    <title>Gaming Sensitivity Calculator | Convert Your Aim Between FPS</title>
+    <meta name="description" content="Free tool to convert your mouse sensitivity (eDPI) between Valorant, CS2, Overwatch, and more. Keep your muscle memory intact." />
   </head>
   <body>
     <main class="container">
       <header class="hero">
-        <h1>Convertidor de Sensibilidad FPS</h1>
-        <p>Transfiere tu configuración exacta entre juegos competitivos. Conserva tu memoria muscular, optimiza tu <strong>eDPI</strong> y no pierdas precisión al cambiar de shooter.</p>
+        <h1>FPS Sensitivity Converter</h1>
+        <p>Transfer your exact settings between competitive games. Preserve your muscle memory, optimize your <strong>eDPI</strong>, and never lose precision when switching shooters.</p>
       </header>
 
       <section class="grid-container">
@@ -63,7 +63,6 @@ import { games } from '../data/games';
       .hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 1rem; color: var(--text-main); }
       .hero p { color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
 
-      /* Grid Mobile-First */
       .grid-container {
         display: grid;
         grid-template-columns: 1fr;
@@ -91,43 +90,6 @@ import { games } from '../data/games';
       }
       .game-name { font-weight: 600; color: var(--text-main); }
       .arrow { color: var(--accent); font-weight: bold; }
-
-      /* Estilos del Componente Calculator.tsx */
-      .calculator-card {
-        background: var(--card-bg);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        padding: 2rem;
-        margin-top: 2rem;
-      }
-      .input-group label {
-        display: block; color: var(--text-muted); margin-bottom: 0.5rem; font-size: 0.9rem;
-      }
-      .input-group input {
-        width: 100%; padding: 1rem; background: var(--bg-color); border: 1px solid var(--border-color);
-        color: var(--text-main); border-radius: 6px; font-size: 1.2rem; outline: none; transition: border 0.2s;
-      }
-      .input-group input:focus { border-color: var(--accent); }
-      
-      .result-group {
-        display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem;
-        padding-top: 1.5rem; border-top: 1px solid var(--border-color);
-      }
-      @media (min-width: 480px) {
-        .result-group { flex-direction: row; justify-content: space-between; align-items: center; }
-      }
-      
-      .result-text span { display: block; color: var(--text-muted); font-size: 0.9rem; }
-      .result-text h3 { color: var(--accent); font-size: 2rem; margin: 0; line-height: 1; }
-      
-      .btn-copy {
-        background: var(--accent); color: #000; border: none; padding: 1rem 1.5rem;
-        font-weight: bold; border-radius: 6px; cursor: pointer; transition: background 0.2s;
-        width: 100%;
-      }
-      @media (min-width: 480px) { .btn-copy { width: auto; } }
-      .btn-copy:hover { background: var(--accent-hover); }
-      .btn-copy.copied { background: #10b981; color: white; }
     </style>
   </body>
 </html>
