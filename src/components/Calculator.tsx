@@ -22,24 +22,25 @@ export default function Calculator({ sourceId, targetId }: { sourceId: string, t
   };
 
   return (
-    <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '8px', marginTop: '20px' }}>
-      <label style={{ display: 'block', marginBottom: '10px' }}>
-        Sensibilidad en {sourceGame.name}:
+    <div className="calculator-card">
+      <div className="input-group">
+        <label>Sensibilidad en {sourceGame.name}</label>
         <input 
           type="number" 
           value={sens} 
-          onInput={(e) => setSens(parseFloat((e.target as HTMLInputElement).value))} 
+          onInput={(e) => setSens(parseFloat((e.target as HTMLInputElement).value) || 0)} 
           step="0.01"
-          style={{ marginLeft: '10px', padding: '5px' }}
+          min="0"
         />
-      </label>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginTop: '20px' }}>
-        <h3 style={{ color: '#2c3e50', margin: 0 }}>Sensibilidad en {targetGame.name}: {result}</h3>
-        <button 
-          onClick={handleCopy}
-          style={{ padding: '8px 12px', cursor: 'pointer', backgroundColor: copied ? '#27ae60' : '#0070f3', color: 'white', border: 'none', borderRadius: '4px', fontWeight: 'bold' }}
-        >
-          {copied ? 'Copiado' : 'Copiar'}
+      </div>
+      
+      <div className="result-group">
+        <div className="result-text">
+          <span>Equivalente en {targetGame.name}</span>
+          <h3>{result}</h3>
+        </div>
+        <button className={copied ? 'btn-copy copied' : 'btn-copy'} onClick={handleCopy}>
+          {copied ? '✓ Copiado' : 'Copiar Valor'}
         </button>
       </div>
     </div>

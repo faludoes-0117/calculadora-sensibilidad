@@ -23,11 +23,28 @@ const { sourceId, targetId, sourceName, targetName } = Astro.props;
 <html lang="es">
   <head>
     <meta charset="utf-8" />
-    <title>Convertir Sensibilidad: {sourceName} a {targetName}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Convertir Sensibilidad de {sourceName} a {targetName} | Calculadora Exacta</title>
+    <meta name="description" content={`Usa nuestra calculadora gratuita para convertir tu sensibilidad de ${sourceName} a ${targetName}. Evita perder tu memoria muscular al cambiar de juego.`} />
   </head>
-  <body style="font-family: system-ui, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-    <a href="/calculadora-sensibilidad/" style="text-decoration: none; color: #0070f3; font-weight: bold; display: inline-block; margin-bottom: 20px;">&larr; Volver al inicio</a>
-    <h1>Convertidor: {sourceName} a {targetName}</h1>
-    <Calculator client:load sourceId={sourceId} targetId={targetId} />
+  <body>
+    <main class="container dynamic-page">
+      <a href="/calculadora-sensibilidad/" class="back-link">⟵ Volver al directorio</a>
+      
+      <header class="dynamic-hero">
+        <h1>Convertidor de {sourceName} a {targetName}</h1>
+        <p>Ingresa tu sensibilidad actual para obtener el valor matemático exacto equivalente.</p>
+      </header>
+
+      <Calculator client:load sourceId={sourceId} targetId={targetId} />
+
+      <section class="seo-content">
+        <h2>¿Por qué convertir la sensibilidad de {sourceName} a {targetName}?</h2>
+        <p>Los motores gráficos de <strong>{sourceName}</strong> y <strong>{targetName}</strong> procesan el movimiento del ratón de manera diferente debido a sus valores predeterminados de <em>Yaw</em> (grados de rotación por punto). Utilizar esta calculadora asegura que la distancia física que recorre tu ratón en la alfombrilla (cm/360) sea idéntica en ambos juegos.</p>
+        
+        <h2>¿Cómo mantener tu Aim intacto?</h2>
+        <p>Para garantizar una transición perfecta, asegúrate de que el DPI de tu ratón se mantenga constante en tu software de periféricos (Logitech, Razer, etc.). Modifica únicamente el valor de la sensibilidad dentro del menú de configuración de {targetName} utilizando el resultado proporcionado arriba.</p>
+      </section>
+    </main>
   </body>
 </html>
