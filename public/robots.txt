@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://faludoes-0117.github.io/calculadora-sensibilidad/sitemap-index.xml
