@@ -245,16 +245,27 @@ import { games } from '../data/games';
         }
       };
 
-      document.getElementById('languageSelect').addEventListener('change', (e) => {
-        const lang = (e.target as HTMLSelectElement).value;
+      const langSelect = document.getElementById('languageSelect') as HTMLSelectElement;
+
+      function applyLanguage(lang: string) {
         const d = dictIndex[lang];
-        
+        if (!d) return;
         document.getElementById('t-h1').innerText = d.h1;
         document.getElementById('t-desc').innerHTML = d.desc;
         document.getElementById('t-from-label').innerText = d.from;
         document.getElementById('t-to-label').innerText = d.to;
         document.getElementById('convertBtn').innerText = d.btn;
+      }
+
+      langSelect.addEventListener('change', (e) => {
+        const lang = (e.target as HTMLSelectElement).value;
+        localStorage.setItem('siteLang', lang);
+        applyLanguage(lang);
       });
+
+      const savedLang = localStorage.getItem('siteLang') || 'en';
+      langSelect.value = savedLang;
+      applyLanguage(savedLang);
 
       document.getElementById('convertBtn').addEventListener('click', () => {
         const source = (document.getElementById('sourceSelect') as HTMLSelectElement).value;

@@ -110,9 +110,11 @@ const { sourceId, targetId, sourceName, targetName } = Astro.props;
         ru: { back: "⟵ Назад", title: "Конвертер:", sub: "Введите текущую чувствительность для получения точного эквивалента.", h2_1: "Зачем конвертировать чувствительность из", to: "в", p1: "Графические движки обрабатывают движения мыши по-разному. Этот калькулятор гарантирует идентичность физического расстояния.", h2_2: "Как сохранить аим?", p2: "Убедитесь, что DPI вашей мыши остается неизменным. Изменяйте только внутриигровую чувствительность.", uiSens: "Чувствительность в", uiEquiv: "Эквивалент в", uiBtn: "Копировать" }
       };
 
-      document.getElementById('languageSelect').addEventListener('change', (e) => {
-        const lang = e.target.value;
+      const langSelect = document.getElementById('languageSelect') as HTMLSelectElement;
+
+      function applyLanguage(lang: string) {
         const d = dict[lang];
+        if (!d) return;
         
         document.getElementById('t-back').innerText = d.back;
         document.getElementById('t-title').innerText = d.title;
@@ -122,10 +124,24 @@ const { sourceId, targetId, sourceName, targetName } = Astro.props;
         document.getElementById('t-p1').innerText = d.p1;
         document.getElementById('t-h2-2').innerText = d.h2_2;
         document.getElementById('t-p2').innerText = d.p2;
-        document.getElementById('ui-sens').innerText = d.uiSens;
-        document.getElementById('ui-equiv').innerText = d.uiEquiv;
-        document.getElementById('ui-btn').innerText = d.uiBtn;
+        
+        const uiSens = document.getElementById('ui-sens');
+        if (uiSens) uiSens.innerText = d.uiSens;
+        const uiEquiv = document.getElementById('ui-equiv');
+        if (uiEquiv) uiEquiv.innerText = d.uiEquiv;
+        const uiBtn = document.getElementById('ui-btn');
+        if (uiBtn) uiBtn.innerText = d.uiBtn;
+      }
+
+      langSelect.addEventListener('change', (e) => {
+        const lang = (e.target as HTMLSelectElement).value;
+        localStorage.setItem('siteLang', lang);
+        applyLanguage(lang);
       });
+
+      const savedLang = localStorage.getItem('siteLang') || 'en';
+      langSelect.value = savedLang;
+      applyLanguage(savedLang);
     </script>
   </body>
 </html>
