@@ -2,5 +2,20 @@ export const games = [
   { id: 'valorant', name: 'Valorant', yaw: 0.07 },
   { id: 'cs2', name: 'CS2', yaw: 0.022 },
   { id: 'overwatch', name: 'Overwatch', yaw: 0.0066 },
-  { id: 'apex', name: 'Apex Legends', yaw: 0.022 }
+  { id: 'apex', name: 'Apex Legends', yaw: 0.022 },
+  { id: 'call-of-duty-warzone', name: 'Call of Duty Warzone', yaw: 0.0066 },
+  { id: 'rainbow-six-siege', name: 'Rainbow Six Siege', yaw: 0.00572957795 },
+  { id: 'rust', name: 'Rust', yaw: 0.022 },
+  { id: 'destiny-2', name: 'Destiny 2', yaw: 0.0066 },
+  { id: 'the-finals', name: 'The Finals', yaw: 0.0066 },
+  { id: 'pubg', name: 'PUBG', yaw: 0.022 },
+  { id: 'escape-from-tarkov', name: 'Escape from Tarkov', yaw: 0.0016 },
+  { id: 'halo-infinite', name: 'Halo Infinite', yaw: 0.0066 },
+  { id: 'battlefield-2042', name: 'Battlefield 2042', yaw: 0.0066 },
+  { id: 'team-fortress-2', name: 'Team Fortress 2', yaw: 0.022 },
+  { id: 'csgo', name: 'CS:GO', yaw: 0.022 },
+  { id: 'quake-live', name: 'Quake Live', yaw: 0.022 },
+  { id: 'titanfall-2', name: 'Titanfall 2', yaw: 0.022 },
+  { id: 'left-4-dead-2', name: 'Left 4 Dead 2', yaw: 0.022 },
+  { id: 'portal-2', name: 'Portal 2', yaw: 0.022 }
 ];
