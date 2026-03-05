@@ -66,7 +66,8 @@ const { sourceId, targetId, sourceName, targetName } = Astro.props;
         --accent: #00e5ff; --accent-hover: #00b8cc; --text-main: #f8fafc; --text-muted: #94a3b8;
       }
       * { box-sizing: border-box; margin: 0; padding: 0; }
-      body { font-family: system-ui, -apple-system, sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; }
+      html { background-color: var(--bg-color); overflow-y: scroll; }
+      body { font-family: system-ui, -apple-system, sans-serif; color: var(--text-main); line-height: 1.6; min-height: 100vh; position: relative; }
       
       .lang-switcher { position: absolute; top: 1rem; right: 1rem; }
       .lang-switcher select { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.5rem; border-radius: 4px; outline: none; cursor: pointer; }

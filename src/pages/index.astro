@@ -60,11 +60,16 @@ import { games } from '../data/games';
       
       * { box-sizing: border-box; margin: 0; padding: 0; }
       
+      html {
+        background-color: var(--bg-color);
+        overflow-y: scroll;
+      }
+
       body {
         font-family: system-ui, -apple-system, sans-serif;
-        background-color: var(--bg-color);
         color: var(--text-main);
         line-height: 1.5;
+        min-height: 100vh;
         position: relative;
       }
 
