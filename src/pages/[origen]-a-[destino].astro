@@ -125,12 +125,7 @@ const { sourceId, targetId, sourceName, targetName } = Astro.props;
         document.getElementById('t-h2-2').innerText = d.h2_2;
         document.getElementById('t-p2').innerText = d.p2;
         
-        const uiSens = document.getElementById('ui-sens');
-        if (uiSens) uiSens.innerText = d.uiSens;
-        const uiEquiv = document.getElementById('ui-equiv');
-        if (uiEquiv) uiEquiv.innerText = d.uiEquiv;
-        const uiBtn = document.getElementById('ui-btn');
-        if (uiBtn) uiBtn.innerText = d.uiBtn;
+        window.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
       }
 
       langSelect.addEventListener('change', (e) => {
@@ -139,9 +134,11 @@ const { sourceId, targetId, sourceName, targetName } = Astro.props;
         applyLanguage(lang);
       });
 
-      const savedLang = localStorage.getItem('siteLang') || 'en';
-      langSelect.value = savedLang;
-      applyLanguage(savedLang);
+      setTimeout(() => {
+        const savedLang = localStorage.getItem('siteLang') || 'en';
+        langSelect.value = savedLang;
+        applyLanguage(savedLang);
+      }, 0);
     </script>
   </body>
 </html>

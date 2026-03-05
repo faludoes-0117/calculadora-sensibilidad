@@ -1,5 +1,6 @@
 ---
 import { games } from '../data/games';
+import Calculator from '../components/Calculator.tsx';
 ---
 
 <html lang="en">
@@ -30,29 +31,7 @@ import { games } from '../data/games';
         <p id="t-desc">Transfer your exact settings between competitive games. Preserve your muscle memory, optimize your <strong>eDPI</strong>, and never lose precision when switching shooters.</p>
       </header>
 
-      <section class="selector-container">
-        <div class="selector-box">
-          <label id="t-from-label">Convert from</label>
-          <select id="sourceSelect">
-            {games.map((g) => (
-              <option value={g.id}>{g.name}</option>
-            ))}
-          </select>
-        </div>
-        
-        <div class="selector-icon">➔</div>
-        
-        <div class="selector-box">
-          <label id="t-to-label">Convert to</label>
-          <select id="targetSelect">
-            {games.map((g) => (
-              <option value={g.id} selected={g.id === "cs2"}>{g.name}</option>
-            ))}
-          </select>
-        </div>
-        
-        <button id="convertBtn" class="convert-btn">Convert</button>
-      </section>
+      <Calculator client:load />
     </main>
 
     <style is:global>
@@ -85,7 +64,7 @@ import { games } from '../data/games';
       .lang-switcher select { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.5rem; border-radius: 4px; outline: none; cursor: pointer; }
 
       .container {
-        max-width: 1000px;
+        max-width: 800px;
         margin: 0 auto;
         padding: 4rem 1rem 2rem 1rem;
       }
@@ -93,6 +72,13 @@ import { games } from '../data/games';
       .hero { text-align: center; margin-bottom: 3rem; }
       .hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 1rem; color: var(--text-main); }
       .hero p { color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+
+      /* Calculator Component CSS extracted from Preact file requirements */
+      .seamless-calculator {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
 
       .selector-container {
         background-color: var(--card-bg);
@@ -102,8 +88,6 @@ import { games } from '../data/games';
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
-        max-width: 800px;
-        margin: 0 auto;
       }
       @media (min-width: 600px) {
         .selector-container {
@@ -159,90 +143,30 @@ import { games } from '../data/games';
         }
       }
 
-      .convert-btn {
-        background-color: var(--accent);
-        color: #000;
-        border: none;
-        padding: 1rem 2rem;
-        font-weight: bold;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 1.1rem;
-        transition: background-color 0.2s, transform 0.1s;
-      }
-      .convert-btn:hover {
-        background-color: var(--accent-hover);
-      }
-      .convert-btn:active {
-        transform: scale(0.98);
-      }
+      .calculator-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem; }
+      .input-group label { display: block; color: var(--text-muted); margin-bottom: 0.5rem; }
+      .input-group input { width: 100%; padding: 1rem; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 6px; font-size: 1.2rem; outline: none; transition: border 0.2s; }
+      .input-group input:focus { border-color: var(--accent); }
+      .result-group { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); }
+      @media (min-width: 480px) { .result-group { flex-direction: row; justify-content: space-between; align-items: center; } }
+      .result-text span { display: block; color: var(--text-muted); }
+      .result-text h3 { color: var(--accent); font-size: 2rem; margin: 0; line-height: 1; }
+      .btn-copy { background: var(--accent); color: #000; border: none; padding: 1rem 1.5rem; font-weight: bold; border-radius: 6px; cursor: pointer; transition: background 0.2s; width: 100%; }
+      @media (min-width: 480px) { .btn-copy { width: auto; } }
+      .btn-copy.copied { background: #10b981; color: white; }
     </style>
 
     <script>
       const dictIndex = {
-        en: { 
-          h1: "FPS Sensitivity Converter", 
-          desc: "Transfer your exact settings between competitive games. Preserve your muscle memory, optimize your <strong>eDPI</strong>, and never lose precision when switching shooters.",
-          from: "Convert from",
-          to: "Convert to",
-          btn: "Convert"
-        },
-        es: { 
-          h1: "Convertidor de Sensibilidad FPS", 
-          desc: "Transfiere tu configuración exacta entre juegos competitivos. Conserva tu memoria muscular, optimiza tu <strong>eDPI</strong> y no pierdas precisión al cambiar de shooter.",
-          from: "Convertir de",
-          to: "Convertir a",
-          btn: "Convertir"
-        },
-        'es-la': { 
-          h1: "Convertidor de Sensibilidad FPS", 
-          desc: "Pasá tu configuración exacta entre juegos competitivos. Mantené tu memoria muscular, optimizá tu <strong>eDPI</strong> y no pierdas precisión al cambiar de shooter.",
-          from: "Convertir de",
-          to: "Convertir a",
-          btn: "Convertir"
-        },
-        de: { 
-          h1: "FPS Empfindlichkeits-Konverter", 
-          desc: "Übertragen Sie Ihre genauen Einstellungen zwischen kompetitiven Spielen. Bewahren Sie Ihr Muskelgedächtnis, optimieren Sie Ihre <strong>eDPI</strong> und verlieren Sie beim Wechseln von Shootern nie an Präzision.",
-          from: "Konvertieren von",
-          to: "Konvertieren nach",
-          btn: "Konvertieren"
-        },
-        fr: { 
-          h1: "Convertisseur de Sensibilité FPS", 
-          desc: "Transférez vos paramètres exacts entre les jeux compétitifs. Préservez votre mémoire musculaire, optimisez votre <strong>eDPI</strong> et ne perdez jamais en précision en changeant de jeu de tir.",
-          from: "Convertir depuis",
-          to: "Convertir vers",
-          btn: "Convertir"
-        },
-        it: { 
-          h1: "Convertitore di Sensibilità FPS", 
-          desc: "Trasferisci le tue impostazioni esatte tra i giochi competitivi. Preserva la tua memoria muscolare, ottimizza il tuo <strong>eDPI</strong> e non perdere mai precisione quando cambi sparatutto.",
-          from: "Converti da",
-          to: "Converti a",
-          btn: "Converti"
-        },
-        zh: { 
-          h1: "FPS 灵敏度转换器", 
-          desc: "在竞技游戏之间转移您的精确设置。保留您的肌肉记忆，优化您的 <strong>eDPI</strong>，并在切换射击游戏时永不失去精度。",
-          from: "转换自",
-          to: "转换至",
-          btn: "转换"
-        },
-        ja: { 
-          h1: "FPS 感度コンバーター", 
-          desc: "対戦ゲーム間で正確な設定を転送します。マッスルメモリを維持し、<strong>eDPI</strong>を最適化し、シューターを切り替える際に精度を失うことはありません。",
-          from: "変換元",
-          to: "変換先",
-          btn: "変換する"
-        },
-        ru: { 
-          h1: "Конвертер Чувствительности FPS", 
-          desc: "Переносите свои точные настройки между соревновательными играми. Сохраняйте мышечную память, оптимизируйте <strong>eDPI</strong> и никогда не теряйте точность при смене шутеров.",
-          from: "Конвертировать из",
-          to: "Конвертировать в",
-          btn: "Конвертировать"
-        }
+        en: { h1: "FPS Sensitivity Converter", desc: "Transfer your exact settings between competitive games. Preserve your muscle memory, optimize your <strong>eDPI</strong>, and never lose precision when switching shooters." },
+        es: { h1: "Convertidor de Sensibilidad FPS", desc: "Transfiere tu configuración exacta entre juegos competitivos. Conserva tu memoria muscular, optimiza tu <strong>eDPI</strong> y no pierdas precisión al cambiar de shooter." },
+        'es-la': { h1: "Convertidor de Sensibilidad FPS", desc: "Pasá tu configuración exacta entre juegos competitivos. Mantené tu memoria muscular, optimizá tu <strong>eDPI</strong> y no pierdas precisión al cambiar de shooter." },
+        de: { h1: "FPS Empfindlichkeits-Konverter", desc: "Übertragen Sie Ihre genauen Einstellungen zwischen kompetitiven Spielen. Bewahren Sie Ihr Muskelgedächtnis, optimieren Sie Ihre <strong>eDPI</strong> und verlieren Sie beim Wechseln von Shootern nie an Präzision." },
+        fr: { h1: "Convertisseur de Sensibilité FPS", desc: "Transférez vos paramètres exacts entre les jeux compétitifs. Préservez votre mémoire musculaire, optimisez votre <strong>eDPI</strong> et ne perdez jamais en précision en changeant de jeu de tir." },
+        it: { h1: "Convertitore di Sensibilità FPS", desc: "Trasferisci le tue impostazioni esatte tra i giochi competitivi. Preserva la tua memoria muscolare, ottimizza il tuo <strong>eDPI</strong> e non perdere mai precisione quando cambi sparatutto." },
+        zh: { h1: "FPS 灵敏度转换器", desc: "在竞技游戏之间转移您的精确设置。保留您的肌肉记忆，优化您的 <strong>eDPI</strong>，并在切换射击游戏时永不失去精度。" },
+        ja: { h1: "FPS 感度コンバーター", desc: "対戦ゲーム間で正確な設定を転送します。マッスルメモリを維持し、<strong>eDPI</strong>を最適化し、シューターを切り替える際に精度を失うことはありません。" },
+        ru: { h1: "Конвертер Чувствительности FPS", desc: "Переносите свои точные настройки между соревновательными играми. Сохраняйте мышечную память, оптимизируйте <strong>eDPI</strong> и никогда не теряйте точность при смене шутеров." }
       };
 
       const langSelect = document.getElementById('languageSelect') as HTMLSelectElement;
@@ -252,9 +176,9 @@ import { games } from '../data/games';
         if (!d) return;
         document.getElementById('t-h1').innerText = d.h1;
         document.getElementById('t-desc').innerHTML = d.desc;
-        document.getElementById('t-from-label').innerText = d.from;
-        document.getElementById('t-to-label').innerText = d.to;
-        document.getElementById('convertBtn').innerText = d.btn;
+        
+        // Dispatch event for Preact components
+        window.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
       }
 
       langSelect.addEventListener('change', (e) => {
@@ -263,19 +187,12 @@ import { games } from '../data/games';
         applyLanguage(lang);
       });
 
-      const savedLang = localStorage.getItem('siteLang') || 'en';
-      langSelect.value = savedLang;
-      applyLanguage(savedLang);
-
-      document.getElementById('convertBtn').addEventListener('click', () => {
-        const source = (document.getElementById('sourceSelect') as HTMLSelectElement).value;
-        const target = (document.getElementById('targetSelect') as HTMLSelectElement).value;
-        if (source === target) {
-          alert('Please select two different games.');
-          return;
-        }
-        window.location.href = `/calculadora-sensibilidad/${source}-a-${target}`;
-      });
+      // Initial load
+      setTimeout(() => {
+        const savedLang = localStorage.getItem('siteLang') || 'en';
+        langSelect.value = savedLang;
+        applyLanguage(savedLang);
+      }, 0);
     </script>
   </body>
 </html>
