@@ -143,60 +143,37 @@ import Calculator from '../components/Calculator.tsx';
         }
       }
 
-      .calculator-layout {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-      }
-      @media (min-width: 768px) {
-        .calculator-layout {
-          flex-direction: row;
-          align-items: stretch;
-        }
-      }
-
-      .side-card {
-        background: var(--card-bg); 
-        border: 1px solid var(--border-color); 
-        border-radius: 12px; 
-        padding: 2rem;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-      }
-
-      .result-side {
-        border-color: var(--accent);
-        box-shadow: 0 0 20px rgba(0, 229, 255, 0.05);
-      }
-
+      .calculator-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem; }
       .input-group label { display: block; color: var(--text-muted); margin-bottom: 0.5rem; }
       .input-group label span { font-weight: bold; color: var(--text-main); }
-      .input-group input { width: 100%; padding: 1rem; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 8px; font-size: 1.2rem; outline: none; transition: border 0.2s; }
-      .input-group input:focus { border-color: var(--accent); }
       
-      .dpi-group input { font-size: 1rem; padding: 0.8rem; }
+      .input-col { display: flex; flex-direction: column; flex: 1; }
+      .flex-2 { flex: 2; }
       
-      .result-text.input-like h3 {
-        width: 100%; padding: 1rem; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--accent); color: var(--accent); border-radius: 8px; font-size: 1.5rem; margin: 0; line-height: 1; text-align: center;
-      }
-
-      .distance-metric {
-        margin-top: auto;
-        padding-top: 1.5rem;
-        border-top: 1px dashed var(--border-color);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .distance-metric span { color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; }
-      .distance-metric p { color: var(--text-main); font-size: 1.1rem; font-weight: bold; margin: 0; }
-
-      .btn-copy { background: var(--accent); color: #000; border: none; padding: 1rem 1.5rem; font-weight: bold; border-radius: 8px; cursor: pointer; transition: background 0.2s; width: 100%; }
-      .btn-copy:hover { background: var(--accent-hover); }
-      .btn-copy.mt { margin-top: 1rem; }
+      .input-group input, .input-col input { width: 100%; padding: 1rem; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 6px; font-size: 1.2rem; outline: none; transition: border 0.2s; box-sizing: border-box; }
+      .input-group input:focus, .input-col input:focus { border-color: var(--accent); }
+      
+      .dpi-row { display: flex; gap: 1rem; align-items: center; width: 100%; }
+      .dpi-input { display: flex; flex-direction: column; width: 100px; }
+      .dpi-label { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.2rem; }
+      .dpi-input input { font-size: 1rem; padding: 0.8rem; }
+      
+      .cm-distance { margin-top: 1rem; padding-top: 1rem; padding-bottom: 0; color: var(--text-muted); font-size: 0.9rem; border-top: 1px dashed var(--border-color); }
+      .cm-distance strong { color: var(--text-main); font-size: 1.1rem;}
+      
+      .result-group { display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); }
+      @media (min-width: 480px) { .result-group { flex-direction: row; justify-content: space-between; align-items: flex-end; } }
+      .result-text { flex: 1; }
+      .result-text > span { display: block; color: var(--text-muted); }
+      .result-text span span { display: inline; font-weight: bold; color: var(--text-main); }
+      .result-text h3 { color: var(--accent); font-size: 2rem; margin: 0; line-height: 1; flex: 1; min-width: 0; }
+      
+      .result-controls { display: flex; gap: 1rem; align-items: flex-end; }
+      .target-dpi { width: 100px; }
+      
+      .btn-copy { background: var(--accent); color: #000; border: none; padding: 1rem 1.5rem; font-weight: bold; border-radius: 6px; cursor: pointer; transition: background 0.2s; height: 100%; white-space: nowrap; }
       .btn-copy.copied { background: #10b981; color: white; }
+      .mt-1 { margin-top: 0.5rem; }
     </style>
 
     <script>

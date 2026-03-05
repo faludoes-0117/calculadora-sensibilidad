@@ -13,23 +13,25 @@ const dict = {
   ru: { from: "Конвертировать из", to: "Конвертировать в", sens: "Чувствительность в", equiv: "Эквивалент в", copy: "Копировать", copied: "✓ Скопировано", dpi: "DPI Мыши", dist: "см/360°" }
 };
 
-export default function Calculator({ initialSourceId = 'valorant', initialTargetId = 'cs2' }: { initialSourceId?: string, initialTargetId?: string }) {
-  const [sourceId, setSourceId] = useState<string>(initialSourceId);
-  const [targetId, setTargetId] = useState<string>(initialTargetId);
+export default function Calculator({ sourceId: serverSourceId = 'valorant', targetId: serverTargetId = 'cs2' }: { sourceId?: string, targetId?: string }) {
+  const [sourceId, setSourceId] = useState<string>(serverSourceId);
+  const [targetId, setTargetId] = useState<string>(serverTargetId);
 
   const [sens, setSens] = useState<number>(1);
   const [sourceDpi, setSourceDpi] = useState<number>(800);
   const [targetDpi, setTargetDpi] = useState<number>(800);
-
-  const [result, setResult] = useState<number>(0);
-  const [sourceDistance, setSourceDistance] = useState<number>(0);
-  const [targetDistance, setTargetDistance] = useState<number>(0);
 
   const [copied, setCopied] = useState<boolean>(false);
   const [lang, setLang] = useState<string>('en');
 
   const sourceGame = games.find((g: any) => g.id === sourceId) || games[0];
   const targetGame = games.find((g: any) => g.id === targetId) || games[1];
+
+  // Perform calculations synchronously for both SSR and CSR
+  const exactSensRatio = (sens * sourceGame.yaw * sourceDpi) / (targetGame.yaw * targetDpi);
+  const result = Number(exactSensRatio.toFixed(4)) || 0;
+
+  const sourceDistance = Number(((360 / (sourceGame.yaw * (sens || 1) * (sourceDpi || 800))) * 2.54).toFixed(2));
 
   useEffect(() => {
     const savedLang = typeof window !== 'undefined' ? localStorage.getItem('siteLang') : null;
@@ -47,22 +49,6 @@ export default function Calculator({ initialSourceId = 'valorant', initialTarget
       return () => window.removeEventListener('languageChanged', handleLangChange);
     }
   }, []);
-
-  useEffect(() => {
-    // Math: New Sens = (Old Sens * Old Yaw * Old DPI) / (New Yaw * New DPI)
-    const exactSensRatio = (sens * sourceGame.yaw * sourceDpi) / (targetGame.yaw * targetDpi);
-    setResult(Number(exactSensRatio.toFixed(4)));
-
-    // Math: 360 Distance (cm) = 360 / (Yaw * Sens * DPI) * 2.54
-    const srcDist = (360 / (sourceGame.yaw * sens * sourceDpi)) * 2.54;
-    setSourceDistance(Number(srcDist.toFixed(2)));
-
-    // To verify, the target distance should match exactly.
-    const tgtDist = (360 / (targetGame.yaw * exactSensRatio * targetDpi)) * 2.54;
-    setTargetDistance(Number(tgtDist.toFixed(2)));
-
-    setCopied(false);
-  }, [sens, sourceDpi, targetDpi, sourceId, targetId, sourceGame.yaw, targetGame.yaw]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(result.toString());
@@ -103,55 +89,50 @@ export default function Calculator({ initialSourceId = 'valorant', initialTarget
         </div>
       </section>
 
-      <div className="calculator-layout wrapper">
-        {/* Source Side */}
-        <div className="calculator-card side-card">
-          <div className="input-group">
-            <label><span>{t.sens}</span> {sourceGame.name}</label>
+      <div className="calculator-card">
+        <div className="input-group">
+          <label><span>{t.sens}</span> {sourceGame.name}</label>
+          <div className="dpi-row">
             <input
               type="number"
               value={sens}
               onInput={(e) => setSens(parseFloat((e.target as HTMLInputElement).value) || 0)}
               step="0.01" min="0"
+              className="flex-2"
             />
-          </div>
-          <div className="input-group dpi-group">
-            <label>{t.dpi}</label>
-            <input
-              type="number"
-              value={sourceDpi}
-              onInput={(e) => setSourceDpi(parseFloat((e.target as HTMLInputElement).value) || 0)}
-              step="100" min="100"
-            />
-          </div>
-          <div className="distance-metric">
-            <span>{t.dist}</span>
-            <p>{sourceDistance > 0 && isFinite(sourceDistance) ? sourceDistance : '0'} cm</p>
+            <div className="dpi-input">
+              <span className="dpi-label">{t.dpi}</span>
+              <input
+                type="number"
+                value={sourceDpi}
+                onInput={(e) => setSourceDpi(parseFloat((e.target as HTMLInputElement).value) || 0)}
+                step="50" min="100"
+              />
+            </div>
           </div>
         </div>
 
-        {/* Target Side */}
-        <div className="calculator-card side-card result-side">
-          <div className="input-group">
-            <label><span>{t.equiv}</span> {targetGame.name}</label>
-            <div className="result-text input-like">
+        <div className="cm-distance">
+          {t.dist}: <strong>{sourceDistance > 0 && isFinite(sourceDistance) ? sourceDistance : '0'} cm</strong>
+        </div>
+
+        <div className="result-group">
+          <div className="result-text">
+            <span><span>{t.equiv}</span> {targetGame.name}</span>
+            <div className="dpi-row mt-1">
               <h3>{result}</h3>
+              <div className="dpi-input">
+                <span className="dpi-label">{t.dpi}</span>
+                <input
+                  type="number"
+                  value={targetDpi}
+                  onInput={(e) => setTargetDpi(parseFloat((e.target as HTMLInputElement).value) || 0)}
+                  step="50" min="100"
+                />
+              </div>
             </div>
           </div>
-          <div className="input-group dpi-group">
-            <label>{t.dpi}</label>
-            <input
-              type="number"
-              value={targetDpi}
-              onInput={(e) => setTargetDpi(parseFloat((e.target as HTMLInputElement).value) || 0)}
-              step="100" min="100"
-            />
-          </div>
-          <div className="distance-metric">
-            <span>{t.dist}</span>
-            <p>{targetDistance > 0 && isFinite(targetDistance) ? targetDistance : '0'} cm</p>
-          </div>
-          <button className={copied ? 'btn-copy copied mt' : 'btn-copy mt'} onClick={handleCopy}>
+          <button className={copied ? 'btn-copy copied' : 'btn-copy'} onClick={handleCopy}>
             {copied ? t.copied : t.copy}
           </button>
         </div>
